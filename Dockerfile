@@ -1,21 +1,25 @@
 FROM python:3-alpine3.15
 
+# Set the working directory
 WORKDIR /app/backend
 
+# Copy requirements.txt into the container
 COPY requirements.txt /app/backend
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y gcc default-libmysqlclient-dev pkg-config \
-    && rm -rf /var/lib/apt/lists/*
 
+# Install necessary system dependencies for Alpine
+RUN apk update && \
+    apk add --no-cache gcc musl-dev libffi-dev python3-dev \
+    mariadb-connector-c-dev pkgconfig
 
-# Install app dependencies
+# Install Python dependencies
 RUN pip install mysqlclient
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy the rest of the application code into the container
 COPY . /app/backend
 
+# Expose the port that the app will run on
 EXPOSE 8000
-CMD ["python3","manage.py"]
-#RUN python manage.py migrate
-#RUN python manage.py makemigrations
+
+# Set the default command to run the application
+CMD ["python3", "manage.py"]
