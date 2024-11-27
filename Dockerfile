@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3-alpine3.15
 
 WORKDIR /app/backend
 
