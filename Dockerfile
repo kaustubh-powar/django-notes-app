@@ -22,4 +22,4 @@ COPY . /app/backend
 EXPOSE 8000
 
 # Set the default command to run the application
-CMD ["python3", "manage.py"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
